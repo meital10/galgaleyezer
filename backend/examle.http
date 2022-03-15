@@ -1,0 +1,46 @@
+@local=http://10.100.102.29:4000/
+
+POST {{local}}auth/signup
+Content-Type: application/json  
+
+{
+    "firstName":"aaaa",
+    "lastName":"aaaa",
+    "email":"pppxc00@gmail.com",
+    "password":"aaaaaaa"
+}
+
+###
+POST {{local}}auth/login
+Content-Type: application/json  
+
+{
+    "username":"pppxc00@gmail.com",
+    "password":"aaaaaaa"
+}
+
+###
+GET {{local}}auth/currentUser
+Content-Type: application/json  
+
+
+###
+GET {{local}}auth/logout
+Content-Type: application/json  
+
+
+
+###
+PUT {{local}}auth/users
+Content-Type: application/json  
+
+{
+    "firstName":"vvvvv",
+    "lastName":"cvcv"
+    
+}
+
+###
+POST {{local}}upload/uploadProfile
+Content-Disposition: form-data; name="profile"; filename="test.png"
+Content-Type: image/png
