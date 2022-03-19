@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -7,15 +7,17 @@ import {
   Button,
   Pressable,
   TouchableOpacity,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import AppButton from "./AppButton";
-import AppText from "./AppText";
-import httpURL from "../services/httpService";
-import { globalStyles } from "../styles/global";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { COLORS } from "../styles/styles.config";
-import { SignupContext } from "../context/UserContext";
+  StyleSheet,
+} from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import AppButton from './AppButton';
+import AppText from './AppText';
+import httpURL from '../services/httpService';
+import { globalStyles } from '../styles/global';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { COLORS } from '../styles/styles.config';
+import { SignupContext } from '../context/UserContext';
+import ImageUploadScreen from '../screens/ImageUploadScreen';
 
 const SignupCard = () => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
@@ -29,16 +31,17 @@ const SignupCard = () => {
 
   const onSubmit = async (info, e) => {
     e.preventDefault();
+    console.log('@@@@', info);
 
     try {
-      const { data } = await httpURL.post("/auth/signup", { ...info });
+      const { data } = await httpURL.post('/auth/signup', { ...info });
       setSignup(data);
     } catch ({ response }) {
-      console.log("a", response.data, response.status);
+      console.log('a', response.data, response.status);
       if (response && response.status === 400) {
-        setError("userExists", {
-          type: "userExists",
-          message: "המשתמש כבר קיים",
+        setError('userExists', {
+          type: 'userExists',
+          message: 'המשתמש כבר קיים',
         });
       }
     }
@@ -59,7 +62,7 @@ const SignupCard = () => {
                 style={globalStyles.formTextInput}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                autoCapitalize='none'
+                autoCapitalize="none"
                 value={value}
                 textContentType="name"
               />
@@ -69,6 +72,7 @@ const SignupCard = () => {
         </Pressable>
         {errors.firstName && <AppText error>This is required.</AppText>}
       </View>
+
       <View style={globalStyles.formInputGroup}>
         <Pressable style={globalStyles.formTextInputContainer}>
           <Controller
@@ -91,6 +95,7 @@ const SignupCard = () => {
         </Pressable>
         {errors.lastName && <AppText error>This is required.</AppText>}
       </View>
+
       <View style={globalStyles.formInputGroup}>
         <Pressable style={globalStyles.formTextInputContainer}>
           <Controller
@@ -115,6 +120,7 @@ const SignupCard = () => {
         {errors.email && <AppText error>This is required.</AppText>}
         {/* {errors.userExists && <AppText error>{errors.userExists}</AppText>} */}
       </View>
+
       <View style={globalStyles.formInputGroup}>
         <Pressable style={globalStyles.formTextInputContainer}>
           <Controller
@@ -137,7 +143,7 @@ const SignupCard = () => {
           />
           <TouchableOpacity onPress={() => setIsSecureEntry((prev) => !prev)}>
             <FontAwesome5
-              name={isSecureEntry ? "eye" : "eye-slash"}
+              name={isSecureEntry ? 'eye' : 'eye-slash'}
               size={20}
               color={COLORS.grey}
               style={globalStyles.secondaryIcon}
@@ -146,6 +152,8 @@ const SignupCard = () => {
         </Pressable>
         {errors.password && <AppText error>This is required.</AppText>}
       </View>
+
+      <ImageUploadScreen />
 
       <AppButton onPress={handleSubmit(onSubmit)}>סיימתי!</AppButton>
     </KeyboardAvoidingView>
