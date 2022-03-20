@@ -13,6 +13,7 @@ import AppText from "./components/AppText";
 import { COLORS } from "./styles/styles.config";
 import ImageUploadScreen from "./screens/ImageUploadScreen";
 import Winners from "./screens/Winners";
+import SetGoalScreen from "./screens/SetGoalScreen";
 
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
@@ -96,6 +97,7 @@ const App = () => {
                 headerBackVisible: true,
               }}
             >
+              <Stack.Screen name="GoalScreen" component={SetGoalScreen} />
               <Stack.Screen name="UploadImage" component={ImageUploadScreen} />
               <Stack.Screen name="Winners" component={Winners} />
             </Stack.Group>
