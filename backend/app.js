@@ -60,7 +60,7 @@ passport.deserializeUser(deserializeUser);
 app.use("/auth", userController);
 app.use("/upload", imageController);
 app.use("/galgaleyezer", goalsController);
-app.use("/galgaleyezer", subgoalsController);
+// app.use("/galgaleyezer", subgoalsController);
 
 // when we will add an admin
 app.use("*", isValid);
