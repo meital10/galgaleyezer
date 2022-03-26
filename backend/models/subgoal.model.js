@@ -8,11 +8,11 @@ const subgoalSchema = new Schema(
       required: true,
       ref: "User",
     },
-    myGoal: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Goal",
-    },
+    // myGoal: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   required: true,
+    //   ref: "Goal",
+    // },
     weekSubgoal: {
       type: String,
       required: true,

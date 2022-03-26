@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 40,
     backgroundColor: COLORS.green,
-    width: 212,
+    // width: 212,
+    width: 290,
     borderRadius: MEASUREMENTS.borderRadius,
     justifyContent: 'center',
     alignItems: 'center',

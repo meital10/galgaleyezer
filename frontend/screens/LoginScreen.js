@@ -18,6 +18,7 @@ import LoginScreenSelector from "../components/LoginScreenSelector";
 import AppButton from "../components/AppButton";
 const { width } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
+
 const LoginScreen = () => {
   const [user, setUser] = useState(null);
   const [signup, setSignup] = useState(null);

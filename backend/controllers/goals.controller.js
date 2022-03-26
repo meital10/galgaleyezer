@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 const goalService = require("../service/goals.service");
@@ -5,13 +6,15 @@ const goalService = require("../service/goals.service");
 // const { isValid } = require("../passport");
 
 router.post("/add-goal", async (req, res) => {
+  console.log(res);
   try {
-    console.log(req.body);
+    // console.log("goal@@@@@@@", req.body);
+    // res.status(200).send();
     const newGoal = await goalService.addGoal(req.body);
     res.status(200).json(newGoal);
   } catch (err) {
     console.log("controller err:", err.message);
-    return res.status(400).send(err);
+    return res.status(402).send(err);
   }
 });
 
