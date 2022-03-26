@@ -1,13 +1,13 @@
-const createHashedPassword = require("./../service/auth-utils");
-const User = require("../models/users.model");
+const createHashedPassword = require('./../service/auth-utils');
+const User = require('../models/users.model');
 
 module.exports = {
   localStrategyHandler: (username, password, done) => {
-    console.log("checking database!");
+    console.log('checking database!');
     User.findOne({ email: username, password: createHashedPassword(password) })
       .then((user) => {
         if (!user) {
-          return done(null, false, { message: "Incorrect username." });
+          return done(null, false, { message: 'Incorrect username.' });
         }
         return done(null, user);
       })

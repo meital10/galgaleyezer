@@ -1,62 +1,61 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
-// import AppText from './../components/AppText';
-// import { COLORS } from './../styles/styles.config';
-import * as ImagePicker from 'expo-image-picker';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { COLORS } from './../styles/styles.config';
-// import httpURL from '../services/httpService';
+import * as ImagePicker from 'expo-image-picker';
+import uuid from 'react-native-uuid';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const ImageUploadScreen = () => {
-  const [profileImage, setProfileImage] = useState('');
-
+const ImageUploadScreen = ({
+  image,
+  setImage,
+  uploadImage,
+  setUploadImage,
+}) => {
   const pickImage = async () => {
-    let response = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0,
     });
 
-    if (!response.cancelled) {
-      console.log('asd');
-      setProfileImage(response.uri);
+    if (result.cancelled) return;
+
+    try {
+      setUploadImage(true);
+      const storage = getStorage();
+      const imageRef = ref(storage, uuid.v4());
+
+      const img = await fetch(result.uri);
+      const bytes = await img.blob();
+
+      await uploadBytes(imageRef, bytes);
+      const avatarImg = await getDownloadURL(imageRef);
+      setUploadImage(false);
+      setImage(avatarImg);
+    } catch (err) {
+      console.log(err);
     }
   };
-
-  // const uploadProfileImage = async () => {
-  //   const imageUri = profileImage.replace('file:/data', 'file:///data');
-  //   const imageType = profileImage.split('.')[1];
-  //   const formData = new FormData();
-  //   formData.append('profile', {
-  //     name: new Date() + '_profile',
-  //     uri: imageUri,
-  //     type: 'image/jpg',
-  //   });
-  //   // formData.append("profile", imageUri);
-  //   console.log(formData);
-  //   try {
-  //     const res = await httpURL.post('/upload', formData, {
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': `multipart/form-data;boundary=${formData}`,
-  //       },
-  //     });
-  //     console.log('res', res);
-  //   } catch (error) {
-  //     console.log('error', error.message);
-  //   }
-  // };
-
-  console.log('!@#!@#!@#', profileImage);
 
   return (
     <View style={styles.container}>
       <Text style={styles.uploadImageTxt}>העלאת תמונת פרופיל</Text>
       <View>
         <TouchableOpacity onPress={pickImage} style={styles.uploadBtn}>
-          {profileImage ? (
+          {image ? (
             <Image
-              source={{ uri: profileImage }}
+              source={{ uri: image }}
               style={{ width: '100%', height: '100%' }}
             />
+          ) : uploadImage ? (
+            <ActivityIndicator size="large" />
           ) : (
             <View>
               <View style={styles.verticalLine} />

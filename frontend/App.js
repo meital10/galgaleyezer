@@ -17,6 +17,8 @@ import Winners from "./screens/Winners";
 import SetGoalScreen from "./screens/SetGoalScreen";
 import GoalModal from "./screens/GoalModal";
 import SubGoalCard from "./components/SubGoalCard";
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from './db/firebaseConfig';
 
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
@@ -24,34 +26,34 @@ I18nManager.allowRTL(true);
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // const navigation = useNavigation();
+  initializeApp(firebaseConfig);
   const [user, setUser] = useState(null);
   const [goal, setGoal] = useState(null);
   const [appIsReady, setAppIsReady] = useState(false);
   const [loaded] = useFonts({
-    VarelaRound: require("./assets/fonts/VarelaRound-Regular.ttf"),
+    VarelaRound: require('./assets/fonts/VarelaRound-Regular.ttf'),
   });
 
   const signOut = async () => {
     try {
-      const res = await httpURL.get("/auth/logout");
+      const res = await httpURL.get('/auth/logout');
       if (res) {
         setUser(() => res.data);
       }
     } catch (error) {
-      console.log("err", error);
+      console.log('err', error);
     }
   };
 
   useEffect(() => {
     const currentUser = async () => {
       try {
-        const res = await httpURL.get("/auth/currentUser");
+        const res = await httpURL.get('/auth/currentUser');
         if (res) {
           setUser(() => res.data.user);
         }
       } catch (error) {
-        console.log("err", error);
+        console.log('err', error);
         setUser(() => null);
       }
     };
@@ -119,7 +121,5 @@ const App = () => {
     </UserContext.Provider>
   );
 };
-
-// const styles = StyleSheet.create({});
 
 export default App;
