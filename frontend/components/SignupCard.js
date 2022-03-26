@@ -21,6 +21,9 @@ import ImageUploadScreen from '../screens/ImageUploadScreen';
 
 const SignupCard = () => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
+  const [image, setImage] = useState(null);
+  const [uploadImage, setUploadImage] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -31,13 +34,22 @@ const SignupCard = () => {
 
   const onSubmit = async (info, e) => {
     e.preventDefault();
-    console.log('@@@@', info);
 
     try {
-      const { data } = await httpURL.post('/auth/signup', { ...info });
-      setSignup(data);
+      const response = await httpURL.post(
+        '/auth/signup',
+        { ...info, avatar: image || '' },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('response.data', response.data);
+      setSignup(response.data);
     } catch ({ response }) {
-      console.log('a', response.data, response.status);
+      console.log('catch response: ', response.data, response.status);
       if (response && response.status === 400) {
         setError('userExists', {
           type: 'userExists',
@@ -153,9 +165,16 @@ const SignupCard = () => {
         {errors.password && <AppText error>This is required.</AppText>}
       </View>
 
-      <ImageUploadScreen />
+      <ImageUploadScreen
+        image={image}
+        setImage={setImage}
+        uploadImage={uploadImage}
+        setUploadImage={setUploadImage}
+      />
 
-      <AppButton onPress={handleSubmit(onSubmit)}>סיימתי!</AppButton>
+      <AppButton disabled={uploadImage} onPress={handleSubmit(onSubmit)}>
+        סיימתי!
+      </AppButton>
     </KeyboardAvoidingView>
   );
 };

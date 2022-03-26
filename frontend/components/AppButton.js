@@ -1,25 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   ActivityIndicator,
   TouchableHighlight,
   View,
-} from "react-native";
-import { COLORS, MEASUREMENTS } from "../styles/styles.config";
-import AppText from "./AppText";
+} from 'react-native';
+import { COLORS, MEASUREMENTS } from '../styles/styles.config';
+import AppText from './AppText';
 
-const AppButton = ({
-  loading,
-  style,
-
-  children,
-  ...props
-}) => {
+const AppButton = ({ loading, style, children, disabled, ...props }) => {
   return (
     <View>
       <TouchableHighlight
-        onPress={() => alert("Pressed!")}
-        style={styles.button}
+        onPress={() => alert('Pressed!')}
+        style={disabled ? styles.disabledButton : styles.button}
+        disabled={disabled}
         {...props}
       >
         <AppText style={styles.label}>{children}</AppText>
@@ -36,10 +31,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.green,
     width: 212,
     borderRadius: MEASUREMENTS.borderRadius,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     height: MEASUREMENTS.fontSize * 2.8,
-    color: "#ff00ff",
+    color: '#ff00ff',
   },
-  label: { color: "#fff", fontSize: MEASUREMENTS.fontSize },
+  disabledButton: {
+    marginTop: 40,
+    backgroundColor: '#96db9b',
+    width: 212,
+    borderRadius: MEASUREMENTS.borderRadius,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: MEASUREMENTS.fontSize * 2.8,
+    color: '#ff00ff',
+  },
+  label: { color: '#fff', fontSize: MEASUREMENTS.fontSize },
 });
