@@ -1,19 +1,36 @@
-const mongoose = require("mongoose");
-// const Goal = require("../models/goal.model");
-const goalSchema = require("../models/goal.model");
-const Goal = mongoose.model("Goal", goalSchema);
+const mongoose = require('mongoose');
+const Goal = require('../models/goal.model');
+const User = require('../models/users.model');
 
 // CRUD
 
-// create a goal
+// Create and Save goal to user.
+/*
+example of json to create goal:
+  {
+  "myGoal": "run 10km"
+  }
+*/
+const addGoal = async (req, res) => {
+  const { myGoal } = req.body;
+  const { _id } = req.user;
 
-const addGoal = async (goal) => {
   try {
-    const newGoal = new Goal(goal);
-    return await newGoal.save();
+    const user = await User.findById(_id);
+    if (user.goal) {
+      return res.status(402).send('The user already has a goal');
+    }
+
+    const newGoal = new Goal({ myGoal, student: _id });
+    await newGoal.save();
+
+    user.goal = newGoal._id;
+    await user.save();
+
+    return res.status(200).json(newGoal);
   } catch (err) {
-    console.log("service addGoal".err.message);
-    throw err;
+    console.warn('service addGoal', err.message);
+    return res.status(402).send(err);
   }
 };
 
@@ -21,9 +38,9 @@ const addGoal = async (goal) => {
 
 const fetchGoals = async () => {
   try {
-    return await Goal.find({}).populate("users");
+    return await Goal.find({}).populate('users');
   } catch (err) {
-    console.log("service fetchGoals err", err.message);
+    console.log('service fetchGoals err', err.message);
     throw err;
   }
 };
@@ -33,10 +50,10 @@ const fetchGoals = async () => {
 const fetchGoalId = async (id) => {
   try {
     return await Goal.findById({ _id: mongoose.Types.ObjectId(id) }).populate(
-      "users"
+      'users'
     );
   } catch (err) {
-    console.log("service: fetchGoalId err", err);
+    console.log('service: fetchGoalId err', err);
     throw err;
   }
 };
@@ -53,7 +70,7 @@ const updateGoal = async (id, data) => {
 
     return result;
   } catch (err) {
-    console.log("service: updateGoal err", err.message);
+    console.log('service: updateGoal err', err.message);
     throw err;
   }
 };
@@ -64,7 +81,7 @@ const deleteGoal = async (id) => {
     const result = await Goal.deleteOne({ _id: mongoose.Types.ObjectId(id) });
     return result;
   } catch (err) {
-    console.log("service:deleteGoal err", err.message);
+    console.log('service:deleteGoal err', err.message);
     throw err;
   }
 };

@@ -1,76 +1,65 @@
-const { response } = require("express");
-const express = require("express");
+const { response } = require('express');
+const express = require('express');
 const router = express.Router();
-const goalService = require("../service/goals.service");
+const goalService = require('../service/goals.service');
 // const passport = require("passport");
-// const { isValid } = require("../passport");
+const { isValid } = require('../passport');
 
-router.post("/add-goal", async (req, res) => {
-  console.log(res);
-  try {
-    // console.log("goal@@@@@@@", req.body);
-    // res.status(200).send();
-    const newGoal = await goalService.addGoal(req.body);
-    res.status(200).json(newGoal);
-  } catch (err) {
-    console.log("controller err:", err.message);
-    return res.status(402).send(err);
-  }
-});
+// Create & Add Goal to user
+router.post('/add-goal', isValid, goalService.addGoal);
 
 // fetch goals
-
-router.get("/goals", async (req, res) => {
+router.get('/goals', async (req, res) => {
   try {
     const goals = await goalService.fetchGoals();
     res.json(goals);
   } catch (err) {
-    console.log("controller goals err", err.message);
+    console.log('controller goals err', err.message);
     res.status(400).json({
-      message: "server error",
+      message: 'server error',
     });
   }
 });
 
 // fetch goal by id
-router.get("/goal/:id", async (req, res) => {
+router.get('/goal/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await goalService.fetchGoalId(id);
     res.json(result);
   } catch (err) {
-    console.log("controller: getGoalById err", err.message);
+    console.log('controller: getGoalById err', err.message);
     res.status(500).json({
-      message: "server error",
+      message: 'server error',
     });
   }
 });
 
 // edit goal
-router.put("/goal/:id", async (req, res) => {
+router.put('/goal/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
     await goalService.updateGoal(id, data);
     res.json({ success: true });
   } catch (err) {
-    console.log("controller: updateGoal err", err.message);
+    console.log('controller: updateGoal err', err.message);
     res.status(500).json({
-      message: "server error",
+      message: 'server error',
     });
   }
 });
 
 // delete goal
-router.delete("/goal/:id", async (req, res) => {
+router.delete('/goal/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await goalService.deleteGoal(id);
     res.json(result);
   } catch (err) {
-    console.log("controller:deleteGoal err", err.message);
+    console.log('controller:deleteGoal err', err.message);
     res.status(500).json({
-      message: "server error",
+      message: 'server error',
     });
   }
 });
