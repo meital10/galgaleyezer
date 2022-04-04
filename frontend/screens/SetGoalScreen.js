@@ -15,27 +15,21 @@ const SetGoalScreen = () => {
   const { goal } = useContext(GoalContext);
   const { setGoal } = useContext(GoalContext);
   const [goalTitle, setGoalTitle] = useState(goal?.title || "");
-  // const [goalTitle, setGoalTitle] = useState("");
-  // const [] = useState();
+
   const navigation = useNavigation();
 
   // add an object
-  const handleSubmit = async (e, user, goal) => {
+  const handleSubmit = async (e, user, myGoal) => {
     e.preventDefault();
     try {
-      const { res } = await httpURL.post("/galgaleyezer/add-goal", {
-        student: user,
-        myGoal: goal,
+      const data = await httpURL.post("/galgaleyezer/add-goal", {
+        // student: user,
+        myGoal: goalTitle,
       });
-      // setGoal(myGoal.goal);
 
-      // setGoal(goal);
-      // console.log(setGoal);
-      console.log(res);
+      console.log(data);
     } catch (err) {
       console.log("err goal saving", err.message);
-
-      // console.log("err goal saving", err.response);
     }
 
     navigation.navigate("GoalModal");

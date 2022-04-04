@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { API_URL } from '@env';
-import { Alert } from 'react-native';
+import axios from "axios";
+import { API_URL } from "@env";
+import { Alert } from "react-native";
 
 const httpURL = axios.create({
-  baseURL: 'http://10.0.0.16:4000',
+  baseURL: "http://10.0.0.3:4000",
 });
 
 // httpURL.interceptors.response.use(null, (error) => {
